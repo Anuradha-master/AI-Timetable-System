@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center">
+Timetable Settings
+</h2>
+
+<div style="width:320px;margin:auto">
+
+<label>Days per week</label>
+<select id="days">
+<option value="5">5 Days</option>
+<option value="6">6 Days</option>
+</select>
+
+<label>Periods per day</label>
+<select id="periods">
+<option value="5">5 Periods</option>
+<option value="6">6 Periods</option>
+<option value="7">7 Periods</option>
+</select>
+
+<label>College Start Time</label>
+<input type="time" id="start_time" value="09:00">
+
+<label>Period Duration (minutes)</label>
+<input type="number" id="duration" value="50">
+
+<label>Lunch After Period</label>
+<select id="lunch_after">
+
+<option value="2">After Period 2</option>
+<option value="3">After Period 3</option>
+<option value="4">After Period 4</option>
+
+</select>
+<label>Lunch Duration (minutes)</label>
+<input type="number" id="lunch_duration" value="40">
+
+<button onclick="saveSettings()">
+Save Settings
+</button>
+
+</div>
+
+<script>
+
+async function saveSettings(){
+
+let data={
+
+days:document.getElementById("days").value,
+
+periods:document.getElementById("periods").value,
+
+start_time:document.getElementById("start_time").value,
+
+duration:document.getElementById("duration").value,
+
+lunch_after:document.getElementById("lunch_after").value,
+
+lunch_duration:document.getElementById("lunch_duration").value
+
+}
+
+await fetch("/save_settings",{
+
+method:"POST",
+
+headers:{"Content-Type":"application/json"},
+
+body:JSON.stringify(data)
+
+})
+
+alert("Settings saved")
+
+}
+
+</script>
+
+{% endblock %}

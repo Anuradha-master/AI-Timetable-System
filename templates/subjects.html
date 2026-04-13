@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center;color:#0d47a1;margin-bottom:20px;">Subject & Lab Management</h2>
+
+<!-- NAVIGATION LINKS -->
+<div style="text-align:center;margin-bottom:20px;">
+    <a href="/teachers" style="background:#28a745;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;margin:5px;display:inline-block;">👨‍🏫 Manage Teachers</a>
+    <a href="/faculty_approval" style="background:orange;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;margin:5px;display:inline-block;">⏳ Pending Approvals</a>
+</div>
+
+<!-- ================= SUBJECT FORM ================= -->
+<div style="max-width:600px;margin:auto;background:#f8fafc;padding:25px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;">
+    <div style="text-align:center;color:#666;margin-bottom:20px;font-size:14px;">
+        Assign <strong>Subjects</strong> to Teachers
+    </div>
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Subject Name *</label>
+    <input type="text" id="subjectName" placeholder="e.g. Data Structures" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Subject Code *</label>
+    <input type="text" id="subjectCode" placeholder="e.g. DS201" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Department *</label>
+    <select id="deptSelectSubject" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+        <option value="">Loading departments...</option>
+    </select>
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Teacher (Active Only) *</label>
+    <select id="teacherSelectSubject" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+        <option value="">Loading active teachers...</option>
+    </select>
+
+    <button onclick="addSubject()" style="width:100%;background:#0d47a1;color:white;padding:15px;border:none;border-radius:5px;font-size:16px;font-weight:bold;margin-top:15px;cursor:pointer;transition:background 0.3s;">
+        ➕ Add Subject
+    </button>
+</div>
+
+<!-- ================= LAB FORM ================= -->
+<div style="max-width:600px;margin:auto;background:#f0f4ff;padding:25px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;">
+    <div style="text-align:center;color:#666;margin-bottom:20px;font-size:14px;">
+        Assign <strong>Labs</strong> to Teachers (Continuous Periods Required)
+    </div>
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Lab Name *</label>
+    <input type="text" id="labName" placeholder="e.g. Programming Lab" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Lab Code *</label>
+    <input type="text" id="labCode" placeholder="e.g. PL301" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Department *</label>
+    <select id="deptSelectLab" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+        <option value="">Loading departments...</option>
+    </select>
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Teacher (Active Only) *</label>
+    <select id="teacherSelectLab" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+        <option value="">Loading active teachers...</option>
+    </select>
+
+    <label style="display:block;margin:10px 0 5px;font-weight:bold;color:#333;">Duration (Continuous Periods) *</label>
+    <input type="number" id="labDuration" placeholder="e.g. 2" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;">
+
+    <button onclick="addLab()" style="width:100%;background:#1976d2;color:white;padding:15px;border:none;border-radius:5px;font-size:16px;font-weight:bold;margin-top:15px;cursor:pointer;transition:background 0.3s;">
+        🧪 Add Lab
+    </button>
+</div>
+
+<!-- ================= SUBJECTS TABLE ================= -->
+<div style="overflow-x:auto;margin-bottom:30px;">
+<h3 style="text-align:center;color:#0d47a1;">Subjects List</h3>
+<table style="width:100%;border-collapse:collapse;text-align:center;margin:auto;max-width:1200px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <thead>
+        <tr style="background:#0d47a1;color:white;">
+            <th style="padding:15px;font-weight:bold;">ID</th>
+            <th style="padding:15px;font-weight:bold;">Subject</th>
+            <th style="padding:15px;font-weight:bold;">Code</th>
+            <th style="padding:15px;font-weight:bold;">Department</th>
+            <th style="padding:15px;font-weight:bold;">Teacher</th>
+            <th style="padding:15px;font-weight:bold;">Action</th>
+        </tr>
+    </thead>
+    <tbody id="subjectTable">
+        <tr><td colspan="6" style="padding:40px;color:#666;font-size:16px;">Loading subjects...</td></tr>
+    </tbody>
+</table>
+</div>
+
+<!-- ================= LABS TABLE ================= -->
+<div style="overflow-x:auto;margin-bottom:50px;">
+<h3 style="text-align:center;color:#0d47a1;">Labs List</h3>
+<table style="width:100%;border-collapse:collapse;text-align:center;margin:auto;max-width:1200px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <thead>
+        <tr style="background:#1976d2;color:white;">
+            <th style="padding:15px;font-weight:bold;">ID</th>
+            <th style="padding:15px;font-weight:bold;">Lab</th>
+            <th style="padding:15px;font-weight:bold;">Code</th>
+            <th style="padding:15px;font-weight:bold;">Department</th>
+            <th style="padding:15px;font-weight:bold;">Teacher</th>
+            <th style="padding:15px;font-weight:bold;">Duration</th>
+            <th style="padding:15px;font-weight:bold;">Action</th>
+        </tr>
+    </thead>
+    <tbody id="labTable">
+        <tr><td colspan="7" style="padding:40px;color:#666;font-size:16px;">Loading labs...</td></tr>
+    </tbody>
+</table>
+</div>
+
+<script>
+// ================= INIT PAGE =================
+async function initPage() {
+    try {
+        const [deptsRes, teachersRes, subjectsRes, labsRes] = await Promise.all([
+            fetch("/get_departments"),
+            fetch("/get_active_teachers"),
+            fetch("/get_subjects"),
+            fetch("/get_labs")
+        ]);
+
+        const depts = await deptsRes.json();
+        const teachers = await teachersRes.json();
+        const subjects = await subjectsRes.json();
+        const labs = await labsRes.json();
+
+        populateDepartments(depts);
+        populateTeachers(teachers);
+        populateSubjects(subjects);
+        populateLabs(labs);
+    } catch (err) {
+        console.error(err);
+        alert("Failed to load data. Reload the page.");
+    }
+}
+
+// ================= POPULATE SELECTS =================
+function populateDepartments(data) {
+    let html = '<option value="">Select Department</option>';
+    data.forEach(d => html += `<option value="${d.id}">${d.name}</option>`);
+    document.getElementById("deptSelectSubject").innerHTML = html;
+    document.getElementById("deptSelectLab").innerHTML = html;
+}
+
+function populateTeachers(data) {
+    let html = '<option value="">Select Active Teacher</option>';
+    data.forEach(t => html += `<option value="${t.id}">${t.name}</option>`);
+    document.getElementById("teacherSelectSubject").innerHTML = html;
+    document.getElementById("teacherSelectLab").innerHTML = html;
+}
+
+// ================= POPULATE TABLES =================
+function populateSubjects(data) {
+    const table = document.getElementById("subjectTable");
+    if (data.length === 0) {
+        table.innerHTML = '<tr><td colspan="6" style="padding:40px;color:#666;">No subjects added yet.</td></tr>';
+        return;
+    }
+    table.innerHTML = '';
+    data.forEach(s => {
+        table.innerHTML += `
+            <tr>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.code}</td>
+                <td>${s.department}</td>
+                <td>${s.teacher}</td>
+                <td>
+                    <button onclick="deleteSubject(${s.id})" style="background:#dc3545;color:white;padding:6px 12px;border:none;border-radius:5px;cursor:pointer;">❌ Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function populateLabs(data) {
+    const table = document.getElementById("labTable");
+    if (data.length === 0) {
+        table.innerHTML = '<tr><td colspan="7" style="padding:40px;color:#666;">No labs added yet.</td></tr>';
+        return;
+    }
+    table.innerHTML = '';
+    data.forEach(l => {
+        table.innerHTML += `
+            <tr>
+                <td>${l.id}</td>
+                <td>${l.name}</td>
+                <td>${l.code}</td>
+                <td>${l.department}</td>
+                <td>${l.teacher}</td>
+                <td>${l.duration}</td>
+                <td>
+                    <button onclick="deleteLab(${l.id})" style="background:#dc3545;color:white;padding:6px 12px;border:none;border-radius:5px;cursor:pointer;">❌ Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// ================= ADD SUBJECT =================
+async function addSubject() {
+    const name = document.getElementById("subjectName").value.trim();
+    const code = document.getElementById("subjectCode").value.trim();
+    const dept = document.getElementById("deptSelectSubject").value;
+    const teacher = document.getElementById("teacherSelectSubject").value;
+
+    if (!name || !code || !dept || !teacher) return alert("Fill all fields!");
+
+    const res = await fetch("/add_subject", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, code, department_id: dept, teacher_id: teacher})
+    });
+    const result = await res.json();
+    if (res.ok) {
+        document.getElementById("subjectName").value = "";
+        document.getElementById("subjectCode").value = "";
+        document.getElementById("deptSelectSubject").value = "";
+        document.getElementById("teacherSelectSubject").value = "";
+        populateSubjects(await (await fetch("/get_subjects")).json());
+        alert(result.message);
+    } else alert(result.error);
+}
+
+// ================= ADD LAB =================
+async function addLab() {
+    const name = document.getElementById("labName").value.trim();
+    const code = document.getElementById("labCode").value.trim();
+    const dept = document.getElementById("deptSelectLab").value;
+    const teacher = document.getElementById("teacherSelectLab").value;
+    const duration = parseInt(document.getElementById("labDuration").value);
+
+    if (!name || !code || !dept || !teacher || !duration) return alert("Fill all fields!");
+
+    const res = await fetch("/add_lab", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, code, department_id: dept, teacher_id: teacher, duration})
+    });
+    const result = await res.json();
+    if (res.ok) {
+        document.getElementById("labName").value = "";
+        document.getElementById("labCode").value = "";
+        document.getElementById("deptSelectLab").value = "";
+        document.getElementById("teacherSelectLab").value = "";
+        document.getElementById("labDuration").value = "";
+        populateLabs(await (await fetch("/get_labs")).json());
+        alert(result.message);
+    } else alert(result.error);
+}
+
+// ================= DELETE FUNCTIONS =================
+async function deleteSubject(id) {
+    if (!confirm("Delete this subject?")) return;
+    const res = await fetch(`/delete_subject/${id}`, {method:"DELETE"});
+    const result = await res.json();
+    if (res.ok) populateSubjects(await (await fetch("/get_subjects")).json());
+    alert(result.message || result.error);
+}
+
+async function deleteLab(id) {
+    if (!confirm("Delete this lab?")) return;
+    const res = await fetch(`/delete_lab/${id}`, {method:"DELETE"});
+    const result = await res.json();
+    if (res.ok) populateLabs(await (await fetch("/get_labs")).json());
+    alert(result.message || result.error);
+}
+
+// ================= INIT =================
+window.onload = initPage;
+
+</script>
+{% endblock %}

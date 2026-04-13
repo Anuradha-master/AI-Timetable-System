@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="
+text-align:center;
+color:#0d47a1;
+margin-bottom:20px;
+">
+Faculty Approval
+</h2>
+<!-- Add this after the h2 in teachers.html -->
+<p style="text-align:center;">
+    <a href="/faculty_register" style="color:blue;">+ New Registration</a> | 
+    <a href="/faculty_approval" style="color:orange;">Pending Approvals</a>
+</p>
+
+<div style="overflow-x:auto;"> <!-- horizontal scroll if table is wide -->
+<table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse; text-align:center;">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Department</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="teacherTable">
+<tr><td colspan="6">Loading faculty data...</td></tr>
+</tbody>
+</table>
+</div>
+
+<script>
+// Fetch and display faculty
+async function loadTeachers() {
+    try {
+        const res = await fetch("/get_faculty");
+        const data = await res.json();
+        const table = document.getElementById("teacherTable");
+        table.innerHTML = "";
+
+        if (!data || data.length === 0) {
+            table.innerHTML = "<tr><td colspan='6'>No faculty registered yet</td></tr>";
+            return;
+        }
+
+        data.forEach(t => {
+            table.innerHTML += `
+            <tr>
+                <td>${t.id}</td>
+                <td>${t.name}</td>
+                <td>${t.email}</td>
+                <td>${t.department || "-"}</td>
+                <td>${t.status}</td>
+                <td>
+                    ${t.status=="Pending" ? `<button onclick="approveTeacher(${t.id})">Approve</button>` : "Approved"}
+                    <button onclick="deleteTeacher(${t.id})">Delete</button>
+                </td>
+            </tr>
+            `;
+        });
+    } catch (err) {
+        console.error("Error loading teachers:", err);
+        document.getElementById("teacherTable").innerHTML = "<tr><td colspan='6'>Failed to load data</td></tr>";
+    }
+}
+
+// Approve faculty
+async function approveTeacher(id) {
+    try {
+        const res = await fetch("/approve_faculty/" + id);
+        const result = await res.json();
+        console.log(result.message);
+        loadTeachers(); // reload table
+    } catch(err) {
+        console.error("Error approving teacher:", err);
+    }
+}
+
+// Delete faculty
+async function deleteTeacher(id) {
+    try {
+        const res = await fetch("/delete_faculty/" + id, { method: "DELETE" });
+        const result = await res.json();
+        console.log(result.message);
+        loadTeachers(); // reload table
+    } catch(err) {
+        console.error("Error deleting teacher:", err);
+    }
+}
+
+// Load teachers when page loads
+window.onload = loadTeachers;
+</script>
+
+{% endblock %}

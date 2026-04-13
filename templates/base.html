@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>AI Timetable System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ---------- GLOBAL ---------- */
+
+html,body{
+height:100%;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(120deg,#eef2ff,#f8fafc);
+}
+
+body{
+display:flex;
+flex-direction:column;
+}
+
+
+/* ---------- HEADER ---------- */
+header{
+    position: fixed;   /* makes it stick at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;     /* ensures it stays above other content */
+    background: linear-gradient(90deg,#2563eb,#1e40af);
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+header h1{
+margin:0;
+font-size:24px;
+font-weight:600;
+letter-spacing:0.5px;
+}
+
+
+/* ---------- NAV ---------- */
+
+nav a{
+
+color:white;
+text-decoration:none;
+margin-left:25px;
+font-weight:500;
+position:relative;
+transition:0.3s;
+
+}
+
+nav a:hover{
+
+color:#c7d2fe;
+
+}
+
+nav a::after{
+
+content:"";
+position:absolute;
+width:0%;
+height:2px;
+background:white;
+left:0;
+bottom:-5px;
+transition:0.3s;
+
+}
+
+nav a:hover::after{
+
+width:100%;
+
+}
+
+
+/* ---------- MAIN CONTAINER ---------- */
+
+.container{
+    width: 92%;
+    max-width: 1150px;
+    margin: 35px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    flex: 1;
+    animation: fadeIn 0.4s ease;
+
+    /* Add padding to prevent content from hiding behind fixed header/footer */
+    padding-top: 90px;   /* same as header height + some spacing */
+    padding-bottom: 60px; /* same as footer height + some spacing */
+}
+/* ---------- BUTTON ---------- */
+
+button{
+
+background:linear-gradient(90deg,#2563eb,#1e40af);
+
+color:white;
+
+border:none;
+
+padding:11px 20px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:14px;
+
+font-weight:500;
+
+transition:0.25s;
+
+box-shadow:0 4px 12px rgba(37,99,235,0.25);
+
+}
+
+button:hover{
+
+transform:translateY(-1px);
+
+box-shadow:0 6px 18px rgba(37,99,235,0.35);
+
+}
+
+
+/* ---------- INPUT ---------- */
+
+input,select{
+
+padding:11px;
+
+border-radius:8px;
+
+border:1px solid #e5e7eb;
+
+width:100%;
+
+margin-top:6px;
+
+margin-bottom:18px;
+
+font-size:14px;
+
+transition:0.25s;
+
+}
+
+input:focus,select:focus{
+
+outline:none;
+
+border:1px solid #2563eb;
+
+box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+
+}
+
+
+/* ---------- TABLE ---------- */
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:25px;
+
+border-radius:10px;
+
+overflow:hidden;
+
+}
+
+table th{
+
+background:#2563eb;
+
+color:white;
+
+padding:12px;
+
+font-weight:500;
+
+}
+
+table td{
+
+padding:12px;
+
+border-bottom:1px solid #f1f5f9;
+
+}
+
+tr:hover{
+
+background:#f8fafc;
+
+}
+
+
+/* ---------- CARDS ---------- */
+
+.card-container{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+gap:22px;
+
+margin-top:10px;
+
+}
+
+.card{
+
+background:white;
+
+padding:25px;
+
+border-radius:14px;
+
+box-shadow:0 8px 25px rgba(0,0,0,0.08);
+
+text-align:center;
+
+transition:0.25s;
+
+border-top:4px solid #2563eb;
+
+}
+
+.card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 15px 35px rgba(0,0,0,0.12);
+
+}
+
+.card h2{
+
+margin:0;
+
+font-size:32px;
+
+color:#1e3a8a;
+
+}
+
+.card p{
+
+margin-top:6px;
+
+color:#64748b;
+
+font-size:14px;
+
+}
+
+
+/* ---------- FOOTER ---------- */
+
+
+
+footer{
+    position: fixed;   /* makes it stick at the bottom */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;     /* ensures it stays above other content */
+    background: linear-gradient(90deg,#2563eb,#1e40af);
+    color: white;
+    text-align: center;
+    padding: 14px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<header>
+
+<h1>AI Timetable System</h1>
+
+<nav>
+
+<a href="/dashboard">Dashboard</a>
+
+<a href="/departments">Departments</a>
+
+<a href="/rooms">Rooms</a>
+
+<a href="/classes">Classes</a>
+
+<a href="/subjects">Subjects</a>
+
+<!-- In your base.html navigation menu -->
+<a href="/faculty_register">Faculty Register</a>
+
+<a href="/teachers">Teachers List</a>
+
+<a href="/faculty_approval">Faculty Management </a>
+
+<a href="/timetable_settings">Timetable setting</a>
+
+<a href="/generate_timetable">Generate</a>
+
+<a href="/logout">Logout</a>
+
+
+</nav>
+
+</header>
+
+
+
+<div class="container">
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+
+
+<footer>
+
+© 2026 AI Timetable Generator | Developed by Team
+
+</footer>
+
+
+
+</body>
+</html>

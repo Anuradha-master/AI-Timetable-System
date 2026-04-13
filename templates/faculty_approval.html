@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="
+    text-align:center;
+    color:#0d47a1;
+    margin-bottom:20px;
+">
+Faculty Approval (Pending)
+</h2>
+
+<div style="overflow-x:auto;">
+<table border="1" cellpadding="10" cellspacing="0" style="
+    width:100%; 
+    border-collapse:collapse; 
+    text-align:center;
+    background:#f8fafc;
+">
+    <thead>
+    <tr style="background:#0d47a1; color:white;">
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if faculty %}
+        {% for f in faculty %}
+        <tr>
+            <td>{{ f.id }}</td>
+            <td>{{ f.name }}</td>
+            <td>{{ f.email }}</td>
+            <td>{{ f.department or '-' }}</td>
+            <td style="color:orange; font-weight:bold;">Pending</td>
+            <td>
+            <a href="/approve_faculty/{{ f.id }}"
+            style="background:green;color:white;padding:5px 10px;border-radius:5px;">
+            Approve
+            </a>
+
+            <a href="/delete_faculty/{{ f.id }}"
+            style="background:red;color:white;padding:5px 10px;border-radius:5px;">
+            Reject
+            </a>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr><td colspan="6" style="padding:20px;color:#666;">No pending faculty registrations</td></tr>
+    {% endif %}
+    </tbody>
+</table>
+</div>
+
+<script>
+// Auto-refresh every 10 seconds to see new registrations
+setTimeout(() => location.reload(), 10000);
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 style="text-align:center;color:#0d47a1;">Room Management</h2>
+
+<div style="max-width:600px;margin:auto;">
+    <label>Room Name / Number</label>
+    <input type="text" id="roomName" placeholder="Enter Room Number (101, Lab1 etc)" required>
+
+    <label>Capacity</label>
+    <input type="number" id="capacity" placeholder="Enter Capacity" required>
+
+    <button onclick="addRoom()">Add Room</button>
+</div>
+
+<br>
+
+<table border="1" width="80%" align="center">
+<thead>
+<tr>
+    <th>#</th>
+    <th>Room</th>
+    <th>Capacity</th>
+    <th>Action</th>
+</tr>
+</thead>
+<tbody id="roomTable"></tbody>
+</table>
+
+<script>
+async function loadRooms(){
+    try{
+        const res = await fetch("/get_rooms");
+        const data = await res.json();
+        let table = document.getElementById("roomTable");
+        table.innerHTML="";
+
+        data.forEach((r, index) => {
+            // Use index+1 as serial number
+            table.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${r.room_name}</td>
+                <td>${r.capacity}</td>
+                <td><button onclick="deleteRoom(${r.id})">Delete</button></td>
+            </tr>`;
+        });
+    } catch(error){
+        console.log("Error loading rooms", error);
+    }
+}
+
+async function addRoom(){
+    let room = document.getElementById("roomName").value.trim();
+    let cap = document.getElementById("capacity").value.trim();
+
+    if(room === "" || cap === ""){
+        alert("Enter room and capacity");
+        return;
+    }
+
+    try{
+        const res = await fetch("/add_room", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({room_name: room, capacity: cap})
+        });
+        const data = await res.json();
+        if(data.error){
+            alert(data.error);
+        } else {
+            document.getElementById("roomName").value = "";
+            document.getElementById("capacity").value = "";
+            document.getElementById("roomName").focus();
+            loadRooms();
+        }
+    } catch(error){
+        console.log("Error adding room", error);
+    }
+}
+
+async function deleteRoom(id){
+    await fetch("/delete_room/" + id, {method: "DELETE"});
+    loadRooms(); // reload table, serial numbers will automatically update
+}
+
+window.onload = loadRooms;
+</script>
+{% endblock %}

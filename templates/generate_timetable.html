@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center;color:#1e3a8a;margin-bottom:20px;">
+AI Timetable Generator
+</h2>
+
+
+<div style="text-align:center;margin-bottom:20px;">
+
+<button onclick="generateTimetable()" 
+style="
+padding:10px 20px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+">
+Generate Timetable
+</button>
+
+</div>
+
+
+<div id="message"
+style="
+text-align:center;
+font-weight:500;
+margin-bottom:20px;
+color:green;
+">
+</div>
+
+
+<div style="overflow-x:auto;">
+
+<table border="1"
+style="
+border-collapse:collapse;
+width:100%;
+text-align:center;
+">
+
+<thead>
+
+<tr id="header_row">
+
+<th>Class</th>
+<th>Day</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tt_body">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<script>
+function generateTimetable(){
+    fetch("/generate_timetable_action")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("message").innerText = data.message || "Timetable generated successfully";
+        loadTimetable();
+    });
+}
+
+function loadTimetable(){
+    fetch("/get_timetable")
+    .then(res => res.json())
+    .then(data => {
+        // ---------- TABLE HEADER ----------
+        let header = "<th>Class</th><th>Day</th>";
+        data.times.forEach(function(t){
+            // fallback to period code if label is missing
+            header += "<th>" + (t.label || t.p || "Period") + "</th>";
+        });
+        document.getElementById("header_row").innerHTML = header;
+
+        // ---------- TABLE BODY ----------
+        let rows = "";
+        data.rows.forEach(function(row){
+            rows += "<tr>";
+            rows += "<td>" + row.class_id + "</td>";
+            rows += "<td>" + row.day + "</td>";
+
+            data.times.forEach(function(t){
+                if(t.type === "lunch"){
+                    rows += "<td style='background:#fef3c7;font-weight:bold;'>LUNCH</td>";
+                } else {
+                    let value = row[t.p] || ""; // avoid undefined
+                    rows += "<td>" + value + "</td>";
+                }
+            });
+
+            rows += "</tr>";
+        });
+
+        document.getElementById("tt_body").innerHTML = rows;
+    });
+}
+
+// auto load timetable
+loadTimetable();
+</script>
+{% endblock %}

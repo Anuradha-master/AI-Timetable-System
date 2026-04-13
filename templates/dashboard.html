@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="
+text-align:center;
+color:#1e3a8a;
+margin-bottom:30px;
+font-weight:600;
+">
+Admin Dashboard
+</h2>
+
+
+<!-- ---------- STATS ---------- -->
+
+<div class="card-container">
+
+<div class="card">
+<h2>{{ dept_count }}</h2>
+<p>Total Departments</p>
+</div>
+
+<div class="card">
+<h2>{{ class_count }}</h2>
+<p>Total Classes</p>
+</div>
+
+<div class="card">
+<h2>{{ teacher_count }}</h2>
+<p>Total Faculty</p>
+</div>
+
+<div class="card">
+<h2>{{ subject_count }}</h2>
+<p>Total Subjects</p>
+</div>
+
+</div>
+
+
+<br><br>
+
+
+<!-- ---------- QUICK ACTIONS ---------- -->
+
+<h3 style="
+color:#1e40af;
+margin-bottom:18px;
+">
+Quick Actions
+</h3>
+
+
+<div class="card-container">
+
+
+<div class="card">
+
+<p style="font-size:18px;">🏢</p>
+
+<p>Departments</p>
+
+<a href="/departments">
+<button>Open</button>
+</a>
+
+</div>
+
+
+
+<div class="card">
+
+<p style="font-size:18px;">🏫</p>
+
+<p>Rooms</p>
+
+<a href="/rooms">
+<button>Open</button>
+</a>
+
+</div>
+
+<div class="card">
+
+<p style="font-size:18px;">🏫 </p>
+
+<p>Classes</p>
+
+<a href="/classes">
+<button>Open</button>
+</a>
+
+</div>
+
+
+
+<div class="card">
+
+<p style="font-size:18px;">👨‍🏫</p>
+
+<p>Faculty</p>
+
+<a href="/teachers">
+<button>Open</button>
+</a>
+
+</div>
+
+
+<div class="card">
+
+<p style="font-size:18px;">📚</p>
+
+<p>Sujects</p>
+
+<a href="/subjects">
+<button>Open</button>
+</a>
+
+</div>
+
+
+
+<div class="card">
+
+<p style="font-size:18px;">📅</p>
+
+<p>Generate Timetable</p>
+
+<a href="/generate_timetable">
+<button>Open</button>
+</a>
+
+</div>
+
+
+
+
+</div>
+
+
+{% endblock %}

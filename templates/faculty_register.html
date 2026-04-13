@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="
+text-align:center;
+color:#0d47a1;
+margin-bottom:20px;
+">
+Faculty Registration
+</h2>
+
+<div style="
+max-width:500px;
+margin:auto;
+background:#f8fafc;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+">
+
+<label>Name</label>
+<input id="name" placeholder="Enter name">
+
+<label>Email</label>
+<input id="email" placeholder="Enter email">
+
+<label>Password</label>
+<input type="password" id="password" placeholder="Enter password">
+
+<label>Department</label>
+<select id="dept"></select>
+
+<button onclick="registerFaculty()">
+Register
+</button>
+
+</div>
+
+<script>
+// Load departments dynamically from backend
+async function loadDepartments() {
+    try {
+        const res = await fetch("/get_departments");
+        const data = await res.json();
+        const select = document.getElementById("dept");
+        select.innerHTML = "<option value=''>Select Department</option>";
+
+        data.forEach(d => {
+            select.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+        });
+    } catch (err) {
+        console.error("Error loading departments:", err);
+        alert("Failed to load departments");
+    }
+}
+
+// Register faculty via POST request
+async function registerFaculty() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const dept = document.getElementById("dept").value;
+
+    if (!name || !email || !password || !dept) {
+        alert("Fill all fields");
+        return;
+    }
+
+    try {
+        const res = await fetch("/faculty_signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                department_id: dept
+            })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            alert(result.message || "Registered. Wait for admin approval.");
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("dept").value = "";
+        } else {
+            alert(result.error || "Failed to register");
+        }
+    } catch (err) {
+        console.error("Error registering faculty:", err);
+        alert("Failed to register faculty");
+    }
+}
+
+// Load departments on page load
+window.onload = loadDepartments;
+</script>
+
+{% endblock %}

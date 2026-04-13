@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center;color:#0d47a1;">Admin Login</h2>
+
+<form method="POST" action="/admin_login" style="max-width:400px;margin:auto;">
+
+<label>Username</label>
+<input type="text" name="username" required>
+
+<label>Password</label>
+<input type="password" name="password" required>
+
+<button type="submit" style="width:100%;">Login</button>
+
+<p style="text-align:center;margin-top:15px;">
+New admin? <a href="/admin_register">Register here</a>
+</p>
+
+</form>
+
+{% endblock %}

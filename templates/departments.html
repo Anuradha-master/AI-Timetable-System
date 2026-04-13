@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="
+text-align:center;
+color:#1e3a8a;
+margin-bottom:25px;
+">
+Department Management
+</h2>
+
+
+<div style="
+max-width:500px;
+margin:auto;
+background:#f8fafc;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+">
+
+<label>Department Name</label>
+
+<input
+type="text"
+id="deptName"
+placeholder="example: CSE, B.Pharmacy"
+>
+
+<button onclick="addDepartment()">
+Add Department
+</button>
+
+</div>
+
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Department Name</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="deptTable">
+</tbody>
+
+</table>
+
+
+
+<script>
+
+async function loadDepartments(){
+
+const res = await fetch("/get_departments")
+
+const data = await res.json()
+
+let table = document.getElementById("deptTable")
+
+table.innerHTML=""
+
+data.forEach(d => {
+
+table.innerHTML += `
+
+<tr>
+
+<td>${d.id}</td>
+
+<td>${d.name}</td>
+
+<td>
+
+<button onclick="deleteDepartment(${d.id})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`
+
+})
+
+}
+
+
+
+async function addDepartment(){
+
+let name = document.getElementById("deptName").value
+
+if(name==""){
+
+alert("Enter department name")
+
+return
+
+}
+
+
+
+await fetch("/add_department",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+name:name
+
+})
+
+})
+
+
+
+document.getElementById("deptName").value=""
+
+
+
+loadDepartments()
+
+}
+
+
+
+async function deleteDepartment(id){
+
+await fetch("/delete_department/"+id,{
+
+method:"DELETE"
+
+})
+
+
+
+loadDepartments()
+
+}
+
+
+
+window.onload = loadDepartments
+
+</script>
+
+
+
+{% endblock %}
