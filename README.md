@@ -60,10 +60,23 @@ python main.py
 
 ---
 
+
 ##  Output
 
-(Add screenshots of your project here for better presentation)
+### Admin login
+![Admin_login](images/Admin_login.png)
 
+### Dashboard View
+![Dashboard](images/Dashboard.png)
+
+### Generated Timetable
+![Timetable](images/Generated_timetable.png)
+
+### Teacher Register
+![Teachers](images/faculty_register.png)
+
+### Tiemtable setting
+![Setting](images/Timetable_setting.png)
 ---
 
 ##  Future Improvements
@@ -76,6 +89,6 @@ python main.py
 
 ##  Author
 
-Anuradha
+Your Name
 
 ---
