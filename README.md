@@ -1,10 +1,10 @@
-# 🚀 AI-Based Smart Timetable Generator
+#  AI-Based Smart Timetable Generator
 
-🚀 Developed as part of Hackathon Project
+ Developed as part of Hackathon Project
 
 ---
 
-## 📌 Problem Statement
+##  Problem Statement
 
 Creating a timetable manually in colleges or schools is a complex and time-consuming task. It often leads to issues like:
 
@@ -14,7 +14,7 @@ Creating a timetable manually in colleges or schools is a complex and time-consu
 
 ---
 
-## 💡 Solution
+## Solution
 
 This project provides an automated timetable generation system that efficiently assigns classes, teachers, and rooms while avoiding scheduling conflicts.
 
@@ -22,17 +22,17 @@ It uses logical rules and constraint-based decision-making to generate an optimi
 
 ---
 
-## 🚀 Features
+## Features
 
-* ✅ Automatic timetable generation
-* ✅ Conflict-free scheduling
-* ✅ Teacher allocation system
-* ✅ Room management
-* ✅ Simple and user-friendly interface
+*  Automatic timetable generation
+*  Conflict-free scheduling
+*  Teacher allocation system
+*  Room management
+*  Simple and user-friendly interface
 
 ---
 
-## 🧠 AI Concepts Used
+##  AI Concepts Used
 
 * Rule-based decision making
 * Constraint satisfaction (avoiding clashes)
@@ -40,7 +40,7 @@ It uses logical rules and constraint-based decision-making to generate an optimi
 
 ---
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 * Python
 * HTML/CSS
@@ -48,7 +48,7 @@ It uses logical rules and constraint-based decision-making to generate an optimi
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 1. Clone the repository
 2. Navigate to project folder
@@ -60,23 +60,22 @@ python main.py
 
 ---
 
-## 📷 Output
+##  Output
 
 (Add screenshots of your project here for better presentation)
 
 ---
 
-## 📌 Future Improvements
+##  Future Improvements
 
 * Add advanced AI/ML optimization
 * Improve UI/UX
-* Add login and authentication system
 * Deploy as a web application
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
-Your Name
+Anuradha
 
 ---
